@@ -19,12 +19,12 @@ class ViewController: UIViewController {
     @IBOutlet weak var targetLabel: UILabel!
     @IBOutlet weak var scoreLabel: UILabel!
     @IBOutlet weak var roundLabel: UILabel!
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         let roundedValue = slider.value.rounded()
         currentValue = Int(roundedValue)
-        startNewRound()
+        startOver()
     }
     
  
@@ -48,14 +48,15 @@ class ViewController: UIViewController {
         }
         score += points
         
-        let message: String = "You scored: \(points)"
+        let message: String = "You scored: \(points) points"
         
         let alert = UIAlertController(title: "\(title)", message: "\(message)", preferredStyle: .alert)
-        let action = UIAlertAction(title: "OK", style: .default, handler: nil)
+        let action = UIAlertAction(title: "OK", style: .default, handler: {
+            action in
+            self.startNewRound()
+        })
         alert.addAction(action)
         present(alert, animated: true, completion: nil)
-        
-        startNewRound()
     }
     
     @IBAction func sliderMoved(_ slider: UISlider) {
