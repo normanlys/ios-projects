@@ -8,16 +8,16 @@
 
 import UIKit
 
-protocol addItemViewControllerDelegate: class {
+protocol ItemDetailViewControllerDelegate: class {
     
-    func addItemViewControllerDidCancel(_ controller: AddItemTableViewController)
-    func addItemViewController(_ controller: AddItemTableViewController, didFinishAdding item: ChecklistItem)
-    func addItemViewController(_ controller: AddItemTableViewController, didFinishEditing item: ChecklistItem)
+    func ItemDetailViewControllerDidCancel(_ controller: ItemDetailViewController)
+    func ItemDetailViewController(_ controller: ItemDetailViewController, didFinishAdding item: ChecklistItem)
+    func ItemDetailViewController(_ controller: ItemDetailViewController, didFinishEditing item: ChecklistItem)
 }
 
-class AddItemTableViewController: UITableViewController {
+class ItemDetailViewController: UITableViewController {
     
-    weak var deleagte: addItemViewControllerDelegate?
+    weak var deleagte: ItemDetailViewControllerDelegate?
     weak var todoList: TodoList?
     weak var itemToEdit: ChecklistItem?
 
@@ -27,20 +27,20 @@ class AddItemTableViewController: UITableViewController {
     
     @IBAction func cancel(_ sender: Any) {
 
-        deleagte?.addItemViewControllerDidCancel(self)
+        deleagte?.ItemDetailViewControllerDidCancel(self)
     }
     
     @IBAction func done(_ sender: Any) {
-        if let item = itemToEdit, let text = textfield.text {
+        if let item = itemToEdit, let text = textfield.text { // if editing
             item.text = text
-            deleagte?.addItemViewController(self, didFinishEditing: item)
-        } else {
+            deleagte?.ItemDetailViewController(self, didFinishEditing: item)
+        } else { // if adding
             if let item = todoList?.newTodo() {
                 if let textFieldText = textfield.text {
                     item.text = textFieldText
                 }
                 item.checked = false
-                deleagte?.addItemViewController(self, didFinishAdding: item)
+                deleagte?.ItemDetailViewController(self, didFinishAdding: item)
             }
         }
         
@@ -48,7 +48,7 @@ class AddItemTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        if let item = itemToEdit {
+        if let item = itemToEdit { // display item to edit
             title = "Edit Item"
             textfield.text = item.text
             addBarButton.isEnabled = true
@@ -66,7 +66,7 @@ class AddItemTableViewController: UITableViewController {
     }
 }
 
-extension AddItemTableViewController: UITextFieldDelegate {
+extension ItemDetailViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textfield.resignFirstResponder()
         return false

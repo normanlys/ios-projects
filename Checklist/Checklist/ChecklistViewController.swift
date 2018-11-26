@@ -52,17 +52,17 @@ class ChecklistViewController: UITableViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "AddItemSegue" {
-            if let addItemViewController = segue.destination as? AddItemTableViewController {
-                addItemViewController.deleagte = self
-                addItemViewController.todoList = todoList
+            if let ItemDetailViewController = segue.destination as? ItemDetailViewController {
+                ItemDetailViewController.deleagte = self
+                ItemDetailViewController.todoList = todoList
             }
         } else if segue.identifier == "EditItemSegue" {
-            if let addItemViewController = segue.destination as? AddItemTableViewController {
+            if let ItemDetailViewController = segue.destination as? ItemDetailViewController {
                 if let cell = sender as? UITableViewCell,
                     let indexPath = tableView.indexPath(for: cell) {
                     let item = todoList.todos[indexPath.row]
-                    addItemViewController.itemToEdit = item
-                    addItemViewController.deleagte = self
+                    ItemDetailViewController.itemToEdit = item
+                    ItemDetailViewController.deleagte = self
                 }
             }
         }
@@ -84,19 +84,19 @@ class ChecklistViewController: UITableViewController {
     
 }
 
-extension ChecklistViewController: addItemViewControllerDelegate {
-    func addItemViewControllerDidCancel(_ controller: AddItemTableViewController) {
+extension ChecklistViewController: ItemDetailViewControllerDelegate {
+    func ItemDetailViewControllerDidCancel(_ controller: ItemDetailViewController) {
         navigationController?.popViewController(animated: true)
     }
     
-    func addItemViewController(_ controller: AddItemTableViewController, didFinishAdding item: ChecklistItem) {
+    func ItemDetailViewController(_ controller: ItemDetailViewController, didFinishAdding item: ChecklistItem) {
         navigationController?.popViewController(animated: true)
         let rowIndex = todoList.todos.count - 1
         let indexPath = IndexPath(row: rowIndex, section: 0)
         tableView.insertRows(at: [indexPath], with: .automatic)
     }
     
-    func addItemViewController(_ controller: AddItemTableViewController, didFinishEditing item: ChecklistItem) {
+    func ItemDetailViewController(_ controller: ItemDetailViewController, didFinishEditing item: ChecklistItem) {
         if let index = todoList.todos.index(of: item) {
             let indexPath = IndexPath(row: index, section: 0)
             if let cell = tableView.cellForRow(at: indexPath) {
