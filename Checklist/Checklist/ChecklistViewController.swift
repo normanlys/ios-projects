@@ -12,6 +12,19 @@ class ChecklistViewController: UITableViewController {
     
     var todoList: TodoList
     
+    @IBAction func deleteItems(_ sender: Any) {
+        if let selectedRows = tableView.indexPathsForSelectedRows {
+            var items = [ChecklistItem]()
+            for indexPath in selectedRows {
+                items.append(todoList.todos[indexPath.row])
+            }
+            todoList.remove(items: items)
+            tableView.beginUpdates()
+            tableView.deleteRows(at: selectedRows, with: .automatic)
+            tableView.endUpdates()
+        }
+    }
+    
     required init?(coder aDecoder: NSCoder) { // called when ViewController is initialized from Storyboard
         todoList = TodoList()
         super.init(coder: aDecoder)
@@ -21,6 +34,13 @@ class ChecklistViewController: UITableViewController {
         super.viewDidLoad()
         
         navigationController?.navigationBar.prefersLargeTitles = true
+        navigationItem.leftBarButtonItem = editButtonItem
+        tableView.allowsMultipleSelectionDuringEditing = true
+    }
+    
+    override func setEditing(_ editing: Bool, animated: Bool) {
+        super.setEditing(editing, animated: true)
+        tableView.setEditing(tableView.isEditing, animated: true)
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -37,11 +57,16 @@ class ChecklistViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if tableView.isEditing {
+            return
+        }
+        
         if let cell = tableView.cellForRow(at: indexPath) {
-            tableView.deselectRow(at: indexPath, animated: true)
-            
             let item = todoList.todos[indexPath.row]
+            item.toggleChecked()
+            
             configureCheckmark(for: cell, with: item)
+            tableView.deselectRow(at: indexPath, animated: true)
         }
     }
     
@@ -68,6 +93,11 @@ class ChecklistViewController: UITableViewController {
         }
     }
     
+    override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+        todoList.move(item: todoList.todos[sourceIndexPath.row], to: destinationIndexPath.row)
+        tableView.reloadData()
+    }
+    
     func configureText(for cell: UITableViewCell, with item: ChecklistItem) {
         if let checkmarkCell = cell as? ChecklistTableViewCell {
             checkmarkCell.todoTextLabel.text = item.text
@@ -79,7 +109,6 @@ class ChecklistViewController: UITableViewController {
             return
         }
         checkmarkCell.checkmarkLabel.text = item.checked ? "√" : ""
-        item.toggleChecked()
     }
     
 }
