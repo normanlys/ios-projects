@@ -41,7 +41,7 @@ class MenuViewController: UITableViewController {
 			}
 		} else {
 			let index = IndexPath(row: 0, section: 0)
-			tableView.selectRow(at: index, animated: false, scrollPosition: UITableViewScrollPosition.none)
+			tableView.selectRow(at: index, animated: false, scrollPosition: UITableView.ScrollPosition.none)
 		}
 	}
 

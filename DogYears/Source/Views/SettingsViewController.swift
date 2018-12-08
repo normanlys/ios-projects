@@ -42,7 +42,7 @@ class SettingsViewController: UIViewController, UICollectionViewDelegate, UIColl
 		let def = UserDefaults.standard
 		let selection = def.integer(forKey: "CurrentTheme")
 		let index = IndexPath(row: selection, section: 0)
-		collectionView.selectItem(at: index, animated: false, scrollPosition: UICollectionViewScrollPosition.top)
+		collectionView.selectItem(at: index, animated: false, scrollPosition: UICollectionView.ScrollPosition.top)
     }
 
     override func didReceiveMemoryWarning() {

@@ -166,6 +166,7 @@ class ChecklistViewController: UITableViewController {
     
 }
 
+
 extension ChecklistViewController: ItemDetailViewControllerDelegate {
     func ItemDetailViewControllerDidCancel(_ controller: ItemDetailViewController) {
         navigationController?.popViewController(animated: true)

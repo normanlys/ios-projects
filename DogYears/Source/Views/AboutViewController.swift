@@ -57,8 +57,8 @@ class AboutViewController: UITableViewController, MFMailComposeViewControllerDel
 		if MFMailComposeViewController.canSendMail() {
 			self.present(mailComposerVC, animated: true, completion: nil)
 		} else {
-			let alert = UIAlertController(title: "Could Not Send Email", message: "Your device could not send e-mail.  Please check e-mail configuration and try again.", preferredStyle: UIAlertControllerStyle.alert)
-			alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+			let alert = UIAlertController(title: "Could Not Send Email", message: "Your device could not send e-mail.  Please check e-mail configuration and try again.", preferredStyle: UIAlertController.Style.alert)
+			alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
 			present(alert, animated: true, completion: nil)
 		}
 	}
